@@ -1,86 +1,67 @@
-import styled from "styled-components"
-import { useEffect, useState } from 'react';
-import useLocalStorage from "./useLocalStorage";
-import InputBox from './InputBox'
+import styled from "styled-components";
+import { useState } from 'react';
+import TaskInputBox from './TaskInputBox';
 
-const TaskBox = styled.div`
-width: 480px;
-flex-direction: column;
-background-color: rgba(0,0,0,0);
-margin: 20px;
-`
-
-const TaskHeader = styled.header`
-display : flex;
-    align-items: center;
-    justify-content : space-between;
-width: 480px;
-height: 40px;
-background-color: rgba(0,0,0,0);
-border-bottom: 1px solid rgba(0,0,0,0.2);
-margin-bottom: 24px;
-button{
-    border: none;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-`
-
-const Task = styled.div`
+const TaskItem = styled.div`
 justify-content : space-between;
 width: 480px;
 height: 50px;
 background-color: #FFFFFF;
 padding: 0 12px;
 margin-bottom: 12px;
-color: #5A5A55;
+p{
+    color: ${props => (props.isChecked ? '#dfdfdf' : '#5A5A55')};
+    text-decoration: ${props => (props.isChecked ? 'line-through' : null)};
+}
 `
+
 const CheckBtn = styled.button`
 width: 24px;
 height: 24px;
 border-radius: 50%;
-background-color: #dfdfdf;
+background-color: ${props => (props.isChecked ? '#D95550': '#dfdfdf')};
 `
 
-const DeleteBtn = styled.button`
+const EditBtn = styled.button`
 width: 24px;
 height: 24px;
 border: 1px solid #dfdfdf;
+color: #dfdfdf;
+i{
+    font-size: 14px;
+}
 `
 
+export default function TaskBox({task, idx, currTab, taskList, setTaskList, isChecked, setIsChecked}){
+    const [isOpen, setIsOpen] = useState(false)
 
-export default function Tab( { tab } ){
-    const currTab = 
-        tab === 'Daily life' ? 'daily' :
-        tab === 'Study' ? 'study' : 
-        tab === 'Work' ? 'work' : null
-    const [local, setLocal] = useLocalStorage(currTab, [])
-    // const [study, setStudy] = useLocalStorage('study', [])
-    // const [work, setWork] = useLocalStorage('work', [])
-    const [taskList, setTaskList] = useState([])
+    const handleEditClick = () => {
+        setIsOpen(!isOpen)
+    }
 
-    useEffect(()=>{
-        setTaskList(local)
-    },[ tab ])
+    const handleCheckClick = () => {
+        let temp = [...isChecked]
+        temp[idx] === null ? temp[idx] = true : temp[idx] = !temp[idx] 
+        window.localStorage.setItem(`${currTab}Checked`, JSON.stringify(temp));
+        setIsChecked(() => JSON.parse(window.localStorage.getItem(`${currTab}Checked`)) || [])
+    }
 
-return(
-    <TaskBox>
-        <TaskHeader>
-            Tasks
-            <DeleteBtn />
-        </TaskHeader>
-        {taskList.map((task, index) => {
-            return (
-                <Task
-                    key={`taskNo${index}`}
-                >
-                    <CheckBtn />
-                    {task}                    
-                    <DeleteBtn/>
-                </Task>
-            )
-        })}
-    <InputBox taskList={taskList} setTaskList={setTaskList}
-    setLocal={setLocal}/>
-    </TaskBox>
-)
+    return(
+        <>
+        {isOpen ? 
+        <TaskInputBox
+            currTab={currTab} setIsOpen={setIsOpen} task={task}
+            taskList={taskList} setTaskList={setTaskList}
+        />
+        : <TaskItem key={`taskNo${idx}`} isChecked={isChecked[idx]}>
+            <CheckBtn isChecked={isChecked[idx]} onClick={handleCheckClick}>
+                <i class="fa-solid fa-check"></i>
+            </CheckBtn>
+            <p>{task}</p>                    
+            <EditBtn onClick={handleEditClick}>
+                <i class="fa-solid fa-pencil"></i>
+            </EditBtn>
+        </TaskItem>}
+        </>        
+    )
 }

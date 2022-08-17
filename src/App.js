@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from './components/Header'
 import Tab from './components/Tab'
-import Taskbox from './components/TaskBox'
+import TaskContainer from './components/TaskContainer'
 import { createGlobalStyle } from "styled-components"
 
 const GlobalStyle = createGlobalStyle`
@@ -50,6 +50,10 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
     const [tab, setTab] = useState('Daily life')
+    const currTab = 
+        tab === 'Daily life' ? 'daily' :
+        tab === 'Study' ? 'study' : 
+        tab === 'Work' ? 'work' : null
 
   return (
     <>
@@ -57,7 +61,7 @@ function App() {
       <div className='container'>
         <Header />
         <Tab tab={tab} setTab={setTab} />
-        <Taskbox tab={tab} />
+        <TaskContainer currTab={currTab} />
       </div>
     </>
   );
