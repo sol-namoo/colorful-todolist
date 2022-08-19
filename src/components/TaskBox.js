@@ -55,11 +55,11 @@ export default function TaskBox({task, idx, currTab, taskList, setTaskList, isCh
         />
         : <TaskItem key={`taskNo${idx}`} isChecked={isChecked[idx]}>
             <CheckBtn isChecked={isChecked[idx]} onClick={handleCheckClick}>
-                <i class="fa-solid fa-check"></i>
+                <i className="fa-solid fa-check"></i>
             </CheckBtn>
             <p>{task}</p>                    
             <EditBtn onClick={handleEditClick}>
-                <i class="fa-solid fa-pencil"></i>
+                <i className="fa-solid fa-pencil"></i>
             </EditBtn>
         </TaskItem>}
         </>        

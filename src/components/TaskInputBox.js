@@ -47,7 +47,7 @@ export default function TaskInputBox({taskList, setTaskList, currTab, setIsOpen,
 
     return (
         <TaskInputBoxStyle>
-        {task !== null ?
+        {task !== undefined ?
             <ColoredBtn color='light' onClick={()=>handleDeleteClick(task)}>Delete</ColoredBtn>
             :null}
         <input
