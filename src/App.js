@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useSelector } from 'react-redux'
 import Header from './components/Header'
 import Tab from './components/Tab'
 import TaskContainer from './components/TaskContainer'
-import { createGlobalStyle } from "styled-components"
+import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
@@ -10,12 +10,14 @@ const GlobalStyle = createGlobalStyle`
   body{
     width: 100vw;
     height: 100vh;
-    background-color: ${
-      props => (
-        props.tab === 'Daily life' ? '#5D9CA0' :
-        props.tab === 'Study' ? '#D95550' :
-        props.tab === 'Work' ? '#588AAC' : '#5D9CA0' 
-      )};
+    background-color: ${(props) =>
+      props.tab === 'Daily life'
+        ? '#5D9CA0'
+        : props.tab === 'Study'
+        ? '#D95550'
+        : props.tab === 'Work'
+        ? '#588AAC'
+        : '#5D9CA0'};
     transition: background-color 0.8s;
     font-family: 'Jua', sans-serif;
     font-size: 18px;
@@ -49,22 +51,18 @@ const GlobalStyle = createGlobalStyle`
 `
 
 function App() {
-    const [tab, setTab] = useState('Daily life')
-    const currTab = 
-        tab === 'Daily life' ? 'daily' :
-        tab === 'Study' ? 'study' : 
-        tab === 'Work' ? 'work' : null
+  const tab = useSelector((store) => store.tab)
 
   return (
     <>
-      <GlobalStyle tab={tab}/>
-      <div className='container'>
+      <GlobalStyle tab={tab} />
+      <div className="container">
         <Header />
-        <Tab tab={tab} setTab={setTab} />
-        <TaskContainer currTab={currTab} />
+        <Tab />
+        <TaskContainer />
       </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
