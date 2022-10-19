@@ -1,70 +1,30 @@
-import React, { useState } from 'react';
+import { useState } from 'react'
 import Header from './components/Header'
 import Tab from './components/Tab'
 import TaskContainer from './components/TaskContainer'
-import { createGlobalStyle } from "styled-components"
-
-const GlobalStyle = createGlobalStyle`
-  box-sizing: border-box;
-  margin:0;padding:0;border:0;
-  body{
-    width: 100vw;
-    height: 100vh;
-    background-color: ${
-      props => (
-        props.tab === 'Daily life' ? '#5D9CA0' :
-        props.tab === 'Study' ? '#D95550' :
-        props.tab === 'Work' ? '#588AAC' : '#5D9CA0' 
-      )};
-    transition: background-color 0.8s;
-    font-family: 'Jua', sans-serif;
-    font-size: 18px;
-    color: #FFFFFF;
-  }
-  button{
-    display : flex;
-    align-items: center;
-    justify-content : center;
-    border: none;
-    border-radius : 6px;
-    background-color: rgba(255, 255, 255, 0.1);
-    font-family: 'Jua', sans-serif;
-    font-size: 18px;
-    color: #FFFFFF;
-    cursor : pointer;
-  }
-  div{
-    box-sizing: border-box;
-    display : flex;
-    align-items: center;
-    justify-content : center;
-    border-radius : 6px;
-    .container{
-      flex-direction: column;
-    }
-  }
-  input{
-    font-family: 'Jua', sans-serif;
-  }
-`
+import { GlobalStyle } from './GlobalStyle'
 
 function App() {
-    const [tab, setTab] = useState('Daily life')
-    const currTab = 
-        tab === 'Daily life' ? 'daily' :
-        tab === 'Study' ? 'study' : 
-        tab === 'Work' ? 'work' : null
+  const [tab, setTab] = useState('Daily life')
+  const currTab =
+    tab === 'Daily life'
+      ? 'daily'
+      : tab === 'Study'
+      ? 'study'
+      : tab === 'Work'
+      ? 'work'
+      : null
 
   return (
     <>
-      <GlobalStyle tab={tab}/>
-      <div className='container'>
+      <GlobalStyle tab={tab} />
+      <div className="container">
         <Header />
         <Tab tab={tab} setTab={setTab} />
         <TaskContainer currTab={currTab} />
       </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
