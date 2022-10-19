@@ -1,12 +1,10 @@
 {
   "files": {
-    "main.js": "/colorful-todolist/static/js/main.6ce4554d.js",
-    "static/js/787.34eee79b.chunk.js": "/colorful-todolist/static/js/787.34eee79b.chunk.js",
+    "main.js": "/colorful-todolist/static/js/main.b9b7a421.js",
     "index.html": "/colorful-todolist/index.html",
-    "main.6ce4554d.js.map": "/colorful-todolist/static/js/main.6ce4554d.js.map",
-    "787.34eee79b.chunk.js.map": "/colorful-todolist/static/js/787.34eee79b.chunk.js.map"
+    "main.b9b7a421.js.map": "/colorful-todolist/static/js/main.b9b7a421.js.map"
   },
   "entrypoints": [
-    "static/js/main.6ce4554d.js"
+    "static/js/main.b9b7a421.js"
   ]
 }
