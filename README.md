@@ -9,5 +9,6 @@
 배포 링크 : https://sol-namoo.github.io/colorful-todolist/ <br/>
 
 ## Updates
-*8.19 / 첫 번째 task 작성 시 delete 버튼이 보이지 않는 오류 수정<br/>
-*(수정 기능 업데이트 예정)
+*22.08.19 / 첫 번째 task 작성 시 delete 버튼이 보이지 않는 오류 수정<br/>
+*22.08.24 / react-redux 추가해 리팩토링<br/>
+*22.10.19 / 수정하기 버튼 클릭 후 저장 시 새 item이 생성되는 오류 수정
