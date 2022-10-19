@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import TaskBox from './TaskBox'
 import InputBox from './InputBox'
 
@@ -25,67 +26,29 @@ const TaskHeader = styled.header`
   }
 `
 
-// const DeleteAllBtn = styled.button`
-// width: 24px;
-// height: 24px;
-// border: 1px solid #dfdfdf;
-// color: #dfdfdf;
-// i{
-//     font-size: 14px;
-// }
-// `
-
 const AddTaskBtn = styled.button`
   width: 480px;
   height: 60px;
   border: 1px dashed #ffffff;
 `
 
-export default function TaskContainer({ currTab }) {
-  const [taskList, setTaskList] = useState(
-    () => JSON.parse(window.localStorage.getItem(currTab)) || []
-  )
-  const [isChecked, setIsChecked] = useState(
-    () => JSON.parse(window.localStorage.getItem(`${currTab}Checked`)) || []
-  )
-  const [isCreateOpen, setIsOpen] = useState(false)
-
-  useEffect(() => {
-    setTaskList(() => JSON.parse(window.localStorage.getItem(currTab)) || [])
-    setIsChecked(
-      () => JSON.parse(window.localStorage.getItem(`${currTab}Checked`)) || []
-    )
-  }, [currTab])
+export default function TaskContainer() {
+  // const dispatch = useDispatch()
+  const taskList = useSelector((store) => store.taskList)
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleAddClick = () => {
-    setIsOpen(!isCreateOpen)
+    setIsOpen(!isOpen)
   }
 
   return (
     <TaskContainerStyle>
       <TaskHeader>Tasks</TaskHeader>
       {taskList.map((task, idx) => {
-        return (
-          <TaskBox
-            key={task}
-            task={task}
-            idx={idx}
-            currTab={currTab}
-            taskList={taskList}
-            setTaskList={setTaskList}
-            isChecked={isChecked}
-            setIsChecked={setIsChecked}
-          />
-        )
+        return <TaskBox key={`task${idx}`} task={task} idx={idx} />
       })}
-      {isCreateOpen ? (
-        <InputBox
-          currTab={currTab}
-          setIsOpen={setIsOpen}
-          mode="create"
-          taskList={taskList}
-          setTaskList={setTaskList}
-        />
+      {isOpen ? (
+        <InputBox setIsOpen={setIsOpen} mode="create" />
       ) : (
         <AddTaskBtn onClick={handleAddClick}>+ Add Task</AddTaskBtn>
       )}

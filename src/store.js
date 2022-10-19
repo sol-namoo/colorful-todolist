@@ -7,14 +7,19 @@ const reducer = (store, action) => {
       taskList:
         (() => JSON.parse(window.localStorage.getItem('Daily life')))() || [],
       checkList:
-        (() =>
-          JSON.parse(window.localStorage.getItem('Daily life Checked')))() ||
-        [],
-      isOpen: false,
+        (() => JSON.parse(window.localStorage.getItem('DailyChecked')))() || [],
     }
   }
   if (action.type === 'CHANGE_TAB') {
-    return { ...store, tab: action.tab }
+    return {
+      tab: action.tab,
+      taskList:
+        (() => JSON.parse(window.localStorage.getItem(action.tab)))() || [],
+      checkList:
+        (() =>
+          JSON.parse(window.localStorage.getItem(`${action.tab} Checked`)))() ||
+        [],
+    }
   }
   if (action.type === 'GET_TASKLIST') {
     return {
@@ -31,9 +36,6 @@ const reducer = (store, action) => {
           JSON.parse(window.localStorage.getItem(`${store.tab} Checked`)))() ||
         [],
     }
-  }
-  if (action.type === 'CHANGE_OPEN') {
-    return { ...store, isOpen: action.isOpen }
   }
 }
 const store = createStore(reducer)

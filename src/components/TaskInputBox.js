@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 const TaskInputBoxStyle = styled.div`
@@ -25,27 +25,20 @@ const ColoredBtn = styled.button`
     props.color === 'gray' ? 'rgb(136, 136, 136)' : 'rgb(239, 239, 239)'};
 `
 
-export default function InputBox({ setIsOpen, mode, task, idx }) {
+export default function TaskInputBox({ setIsOpen, task }) {
   const dispatch = useDispatch()
   const tab = useSelector((store) => store.tab)
   const taskList = useSelector((store) => store.taskList)
-  const checkList = useSelector((store) => store.checkList)
   const [input, setInput] = useState(task)
-  console.log(input)
 
   const handleInputChange = (e) => {
     setInput(e.target.value)
   }
 
   const handleSaveClick = () => {
-    if (mode === 'create')
-      window.localStorage.setItem(tab, JSON.stringify([...taskList, input]))
-    else if (mode === 'edit') {
-      taskList[idx] = input
-      window.localStorage.setItem(tab, JSON.stringify(taskList))
-    }
-    dispatch({ type: 'GET_TASKLIST' })
     setIsOpen(false)
+    window.localStorage.setItem(tab, JSON.stringify([...taskList, input]))
+    dispatch({ type: 'GET_TASKLIST' })
   }
 
   const handleDeleteClick = (task) => {
@@ -54,8 +47,6 @@ export default function InputBox({ setIsOpen, mode, task, idx }) {
       tab,
       JSON.stringify(taskList.filter((el) => el !== task))
     )
-    checkList.splice(idx, 1)
-    window.localStorage.setItem(`${tab} Checked`, JSON.stringify(checkList))
     dispatch({ type: 'GET_TASKLIST' })
   }
 
@@ -71,7 +62,7 @@ export default function InputBox({ setIsOpen, mode, task, idx }) {
         </ColoredBtn>
       ) : null}
       <input
-        value={input}
+        input={input}
         onChange={handleInputChange}
         placeholder="What are you working on?"
       ></input>

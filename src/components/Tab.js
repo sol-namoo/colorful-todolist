@@ -1,3 +1,4 @@
+import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 const TabBox = styled.div`
@@ -15,9 +16,16 @@ const TabBtn = styled.button`
   margin: 8px;
 `
 
-export default function Tab({ tab, setTab }) {
+export default function Tab() {
+  const dispatch = useDispatch()
+  const tab = useSelector((store) => store.tab)
   const tabArr = ['Daily life', 'Study', 'Work']
-  const handleClick = (e) => setTab(e.target.textContent)
+
+  const handleClick = (e) =>
+    dispatch({
+      type: 'CHANGE_TAB',
+      tab: e.target.textContent,
+    })
 
   return (
     <TabBox>

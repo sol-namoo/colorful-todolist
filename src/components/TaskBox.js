@@ -1,5 +1,6 @@
-import styled from 'styled-components'
+import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
+import styled from 'styled-components'
 import InputBox from './InputBox'
 
 const TaskItem = styled.div`
@@ -10,8 +11,8 @@ const TaskItem = styled.div`
   padding: 0 12px;
   margin-bottom: 12px;
   p {
-    color: ${(props) => (props.isChecked ? '#dfdfdf' : '#5A5A55')};
-    text-decoration: ${(props) => (props.isChecked ? 'line-through' : null)};
+    color: ${(props) => (props.checkList ? '#dfdfdf' : '#5A5A55')};
+    text-decoration: ${(props) => (props.checkList ? 'line-through' : null)};
   }
 `
 
@@ -19,7 +20,7 @@ const CheckBtn = styled.button`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: ${(props) => (props.isChecked ? '#D95550' : '#dfdfdf')};
+  background-color: ${(props) => (props.checkList ? '#D95550' : '#dfdfdf')};
 `
 
 const EditBtn = styled.button`
@@ -32,15 +33,10 @@ const EditBtn = styled.button`
   }
 `
 
-export default function TaskBox({
-  task,
-  idx,
-  currTab,
-  taskList,
-  setTaskList,
-  isChecked,
-  setIsChecked,
-}) {
+export default function TaskBox({ task, idx }) {
+  const dispatch = useDispatch()
+  const tab = useSelector((store) => store.tab)
+  const checkList = useSelector((store) => store.checkList)
   const [isOpen, setIsOpen] = useState(false)
 
   const handleEditClick = () => {
@@ -48,29 +44,19 @@ export default function TaskBox({
   }
 
   const handleCheckClick = () => {
-    let temp = [...isChecked]
+    let temp = [...checkList]
     temp[idx] === null ? (temp[idx] = true) : (temp[idx] = !temp[idx])
-    window.localStorage.setItem(`${currTab}Checked`, JSON.stringify(temp))
-    setIsChecked(
-      () => JSON.parse(window.localStorage.getItem(`${currTab}Checked`)) || []
-    )
+    window.localStorage.setItem(`${tab} Checked`, JSON.stringify(temp))
+    dispatch({ type: 'GET_CHECKLIST' })
   }
 
   return (
     <>
       {isOpen ? (
-        <InputBox
-          currTab={currTab}
-          setIsOpen={setIsOpen}
-          mode="edit"
-          idx={idx}
-          task={task}
-          taskList={taskList}
-          setTaskList={setTaskList}
-        />
+        <InputBox setIsOpen={setIsOpen} mode="edit" task={task} idx={idx} />
       ) : (
-        <TaskItem key={`taskNo${idx}`} isChecked={isChecked[idx]}>
-          <CheckBtn isChecked={isChecked[idx]} onClick={handleCheckClick}>
+        <TaskItem key={`taskNo${idx}`} checkList={checkList[idx]}>
+          <CheckBtn checkList={checkList[idx]} onClick={handleCheckClick}>
             <i className="fa-solid fa-check"></i>
           </CheckBtn>
           <p>{task}</p>
